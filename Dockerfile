@@ -50,8 +50,9 @@ RUN bash -c "source activate lazyllm && pip install  -r requirements0.txt --defa
     && bash -c "source activate lazyllm && pip install  -r requirements2.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install  -r requirements3.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install flash-attn==2.5.8" \
-    && bash -c "source activate lazyllm && conda install mpi4py" \
-    && bash -c "source activate lazyllm && git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory.git && cd LLaMA-Factory && pip install -e ."
+    && bash -c "source activate lazyllm && conda install -y mpi4py" \
+    && bash -c "source activate lazyllm && git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory.git && cd LLaMA-Factory && pip install -e ." \
+    && rm -rf /tmp/*
 
 
 ENTRYPOINT ["/bin/bash"]
