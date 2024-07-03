@@ -127,7 +127,7 @@ llama-index-storage-index-store-redis==0.1.2
 llama-index-storage-kvstore-redis==0.1.5
 llama-index-vector-stores-redis==0.2.0
 llama-parse==0.4.3
-llamafactory==0.8.3.dev0
+llamafactory==0.8.2
 llamaindex-py-client==0.1.19
 llvmlite==0.42.0
 loguru==0.7.2
