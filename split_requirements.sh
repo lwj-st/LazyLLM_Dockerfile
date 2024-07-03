@@ -15,7 +15,7 @@ lines_per_file=$(( (total_lines + 3) / 4 ))
 
 # 分割文件
 for i in {0..3}; do
-    start=$(( i * lines_per_file ))
+    start=$(( i * lines_per_file + 1 ))
     end=$(( (i + 1) * lines_per_file ))
     if (( end > total_lines )); then
         end=$total_lines
