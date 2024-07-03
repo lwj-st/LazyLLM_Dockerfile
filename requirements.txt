@@ -225,7 +225,7 @@ regex==2024.5.15
 requests==2.32.2
 requests-toolbelt==1.0.0
 rich==13.7.1
-rpdb==0.1.6
+# rpdb==0.1.6
 rpds-py==0.18.1
 rpyc==6.0.0
 ruamel.yaml==0.17.21
