@@ -36,8 +36,9 @@ RUN set -ex \
 # 将 conda 的 bin 目录添加到 PATH 环境变量
 ENV PATH="/opt/miniconda3/bin:/usr/local/redis-stack-server-7.2.0-v10/bin:${PATH}"
 
+ENV REQUIREMENTS_HASH=$REQUIREMENTS_HASH
 # 复制 requirements.txt 文件到 Docker 容器
-COPY requirements* /tmp/
+COPY requirement* /tmp/
 
 # 初始化 conda
 RUN conda init bash \
@@ -45,16 +46,17 @@ RUN conda init bash \
     && echo "source activate lazyllm" > ~/.bashrc
 
 # 拆分多个requirements安装
-RUN bash -c "source activate lazyllm && pip install  -r requirements0.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
+RUN bash -c "source activate lazyllm && conda install -y mpi4py" \
+    && bash -c "source activate lazyllm && pip install  -r requirements0.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install  -r requirements1.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install  -r requirements2.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install  -r requirements3.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install flash-attn==2.5.8" \
-    && bash -c "source activate lazyllm && conda install -y mpi4py" \
     && bash -c "source activate lazyllm && git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory.git && cd LLaMA-Factory && pip install -e ." \
     && bash -c "source activate lazyllm && pip install https://mirrors.cloud.tencent.com/pypi/packages/53/b7/6663ec9c0157cf7c766bd4c9dca957ca744f0b3b16c945be7e8f8d0b2142/rpdb-0.1.6.tar.gz" \
     && rm -rf /tmp/*
 
+RUN chown root:root /tmp && chmod 1777 /tmp
 
 ENTRYPOINT ["/bin/bash"]
 WORKDIR /root
