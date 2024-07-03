@@ -1,0 +1,11 @@
+# 配置基础镜像
+FROM registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:cuda12.1.0-cudnn8-ubuntu22.04_0611
+
+# 安装依赖
+RUN set -ex \
+    && chmod 777 /tmp \
+    && useradd -u 1091 -m -d "/home/mnt/sunxiaoye"  "sunxiaoye"
+
+USER sunxiaoye
+
+WORKDIR /home/mnt/sunxiaoye
