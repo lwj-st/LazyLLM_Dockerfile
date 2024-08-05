@@ -4,8 +4,8 @@ FROM registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:${version}
 
 # 安装依赖
 RUN set -ex \
-    && useradd -u 1091 -m -d "/home/mnt/sunxiaoye"  "sunxiaoye"
+    && useradd -u 1093 -m -d "/home/mnt/wangzhihong"  "wangzhihong"
 
-USER sunxiaoye
+USER wangzhihong
 
-WORKDIR /home/mnt/sunxiaoye
+WORKDIR /home/mnt/wangzhihong

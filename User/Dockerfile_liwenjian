@@ -1,0 +1,11 @@
+ARG version
+# 配置基础镜像
+FROM registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:$version
+
+# 安装依赖
+RUN set -ex \
+    && useradd -u 9999 -m -d "/home/mnt/liwenjian"  "liwenjian"
+
+USER liwenjian
+
+WORKDIR /home/mnt/liwenjian
