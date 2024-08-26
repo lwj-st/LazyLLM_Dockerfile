@@ -1,0 +1,12 @@
+ARG version
+# 配置基础镜像
+FROM registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:$version
+
+ENV PATH=/home/mnt/test_user/Test/miniconda3/bin:/usr/local/redis-stack-server-7.2.0-v10/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# 安装依赖
+RUN set -ex \
+    && useradd -u 9998 -m -d "/home/mnt/test_user"  "test_user"
+
+USER test_user
+
+WORKDIR /home/mnt/test_user
