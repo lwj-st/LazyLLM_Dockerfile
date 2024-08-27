@@ -8,10 +8,10 @@ RUN set -ex \
     && apt-get install -y zsh \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && useradd -u 1092 -m -s /usr/bin/zsh -d "/home/mnt/yangchen"  "yangchen"
+    && useradd -u 1097 -m -s /usr/bin/zsh -d "/home/mnt/wenduren"  "wenduren"
 
 ENTRYPOINT ["/usr/bin/zsh"]
 
-USER yangchen
+USER wenduren
 
-WORKDIR /home/mnt/yangchen
+WORKDIR /home/mnt/wenduren
