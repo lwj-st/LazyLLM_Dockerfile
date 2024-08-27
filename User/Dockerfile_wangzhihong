@@ -4,7 +4,13 @@ FROM registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:${version}
 
 # 安装依赖
 RUN set -ex \
-    && useradd -u 1093 -m -d "/home/mnt/wangzhihong"  "wangzhihong"
+    && apt-get update \
+    && apt-get install -y zsh \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -u 1093 -m -s /usr/bin/zsh -d "/home/mnt/wangzhihong"  "wangzhihong"
+
+ENTRYPOINT ["/usr/bin/zsh"]
 
 USER wangzhihong
 
