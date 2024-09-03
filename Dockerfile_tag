@@ -1,6 +1,5 @@
 # 配置基础镜像
 FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
-ARG LAZYLLM_VERSION=""
 
 # 设置工作目录
 WORKDIR /tmp
@@ -38,7 +37,6 @@ RUN set -ex \
 ENV PATH="/opt/miniconda3/bin:/usr/local/redis-stack-server-7.2.0-v10/bin:${PATH}"
 
 ENV REQUIREMENTS_HASH=$REQUIREMENTS_HASH
-ENV LAZYLLM_VERSION=$LAZYLLM_VERSION
 # 复制 requirements.txt 文件到 Docker 容器
 COPY requirement* /tmp/
 
@@ -53,8 +51,12 @@ RUN bash -c "source activate lazyllm && conda install -y mpi4py" \
     && bash -c "source activate lazyllm && pip install  -r requirements1.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install  -r requirements2.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install  -r requirements3.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
-    && bash -c "source activate lazyllm && pip install flash-attn==2.5.8" \
-    && bash -c "source activate lazyllm && pip install lazyllm==${LAZYLLM_VERSION}"  \
+    && bash -c "source activate lazyllm && pip install flash-attn==2.6.3 && pip cache purge" \
+    && rm -rf /tmp/* 
+
+ARG LAZYLLM_VERSION=""
+ENV LAZYLLM_VERSION=$LAZYLLM_VERSION
+RUN bash -c "source activate lazyllm && pip install lazyllm==${LAZYLLM_VERSION}"  \
     && rm -rf /tmp/*
 
 RUN chown root:root /tmp && chmod 1777 /tmp
