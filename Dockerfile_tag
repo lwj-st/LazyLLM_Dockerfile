@@ -36,7 +36,6 @@ RUN set -ex \
 # 将 conda 的 bin 目录添加到 PATH 环境变量
 ENV PATH="/opt/miniconda3/bin:/usr/local/redis-stack-server-7.2.0-v10/bin:${PATH}"
 
-ENV REQUIREMENTS_HASH=$REQUIREMENTS_HASH
 # 复制 requirements.txt 文件到 Docker 容器
 COPY requirement* /tmp/
 
