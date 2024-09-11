@@ -49,3 +49,6 @@ RUN bash -c "source activate eqa  \
     && pip install paddleocr==2.8.0  pillow==8.4.0  \
     && pip cache purge "
 
+RUN bash -c "source activate eqa  \
+    && pip install pytest \
+    && pip cache purge "
