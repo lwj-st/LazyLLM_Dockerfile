@@ -50,7 +50,7 @@ RUN bash -c "source activate lazyllm && conda install -y mpi4py" \
     && bash -c "source activate lazyllm && pip install  -r requirements1.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install  -r requirements2.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
     && bash -c "source activate lazyllm && pip install  -r requirements3.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
-    && bash -c "source activate lazyllm && pip install flash-attn==2.6.3 && pip cache purge" \
+    && bash -c "source activate lazyllm && pip install flash-attn==2.6.2 && pip cache purge" \
     && rm -rf /tmp/*
 
 RUN chown root:root /tmp && chmod 1777 /tmp

@@ -1,5 +1,5 @@
 #!/bin/bash
-version=cuda12.1.0-cudnn8-ubuntu22.04_0805
+version=cuda12.1.0-cudnn8-ubuntu22.04_0923
 
 export Server_Dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 cd $Server_Dir
