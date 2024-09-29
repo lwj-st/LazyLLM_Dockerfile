@@ -26,4 +26,4 @@ done
 echo "分割完成：requirements0.txt - requirements3.txt"
 HASH=$(sha256sum requirements.txt | cut -c 1-8)
 echo "docker build  -t registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:cuda12.1.0-cudnn8-ubuntu22.04_xxx ."
-echo "docker build -f Dockerfile_tag --build-arg LAZYLLM_VERSION=xxx -t registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:xxx ."
+echo "docker build -f Dockerfile_tag --build-arg LAZYLLM_VERSION=0.2.5 -t registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:0.2.5 ."
