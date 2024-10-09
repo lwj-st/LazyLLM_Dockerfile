@@ -30,6 +30,7 @@ RUN set -ex \
     && rm Miniconda3-py310_23.1.0-1-Linux-x86_64.sh \
     && wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz \
     && tar xf redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz \
+    && chown -R root:root /tmp && chmod 1777 /tmp \
     && mv redis-stack-server-7.2.0-v10 /usr/local/ \
     && rm -rf redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz
 
@@ -54,8 +55,6 @@ RUN --mount=type=cache,target=/root/.cache/pip,uid=0,gid=0 \
     pip install -r requirements3.txt --default-timeout=10000 --no-deps && \
     pip install flash-attn==2.6.2 && \
     rm -rf /tmp/*"
-
-RUN chown root:root /tmp && chmod 1777 /tmp
 
 ENTRYPOINT ["/bin/bash"]
 WORKDIR /root
