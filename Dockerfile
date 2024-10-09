@@ -45,13 +45,15 @@ RUN conda init bash \
     && echo "source activate lazyllm" > ~/.bashrc
 
 # 拆分多个requirements安装
-RUN bash -c "source activate lazyllm && conda install -y mpi4py" \
-    && bash -c "source activate lazyllm && pip install  -r requirements0.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
-    && bash -c "source activate lazyllm && pip install  -r requirements1.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
-    && bash -c "source activate lazyllm && pip install  -r requirements2.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
-    && bash -c "source activate lazyllm && pip install  -r requirements3.txt --default-timeout=10000 --no-deps  --no-cache-dir " \
-    && bash -c "source activate lazyllm && pip install flash-attn==2.6.2 && pip cache purge" \
-    && rm -rf /tmp/*
+RUN --mount=type=cache,target=/root/.cache/pip,uid=0,gid=0 \
+    bash -c "source activate lazyllm && \
+    conda install -y mpi4py && \
+    pip install -r requirements0.txt --default-timeout=10000 --no-deps && \
+    pip install -r requirements1.txt --default-timeout=10000 --no-deps && \
+    pip install -r requirements2.txt --default-timeout=10000 --no-deps && \
+    pip install -r requirements3.txt --default-timeout=10000 --no-deps && \
+    pip install flash-attn==2.6.2 && \
+    rm -rf /tmp/*"
 
 RUN chown root:root /tmp && chmod 1777 /tmp
 
