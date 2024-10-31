@@ -6,7 +6,7 @@ ENV PATH=/home/mnt/test_user/Test/miniconda3/bin:/usr/local/redis-stack-server-7
 # 安装依赖
 RUN set -ex \
     && apt-get update \
-    && apt-get install -y zsh \
+    && apt-get install -y zsh iputils-ping \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -u 9998 -m -s /usr/bin/zsh -d "/home/mnt/test_user"  "test_user"

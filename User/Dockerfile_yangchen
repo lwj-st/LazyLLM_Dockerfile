@@ -5,7 +5,7 @@ FROM registry.cn-sh-01.sensecore.cn/ai-expert-service/lazyllm:${version}
 # 安装依赖
 RUN set -ex \
     && apt-get update \
-    && apt-get install -y zsh \
+    && apt-get install -y zsh iputils-ping \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -u 1092 -m -s /usr/bin/zsh -d "/home/mnt/yangchen"  "yangchen"
