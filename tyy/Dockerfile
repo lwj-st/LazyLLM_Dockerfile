@@ -54,4 +54,8 @@ RUN bash -c "source activate eqa  \
     && pip cache purge "
 
 ENV PYTHONUSERBASE=/data/sqa/.local
+ENV PATH="/data/sqa/.local/bin:${PATH}"
 
+RUN apt-get update  \
+    && apt-get install -y libgl1 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
