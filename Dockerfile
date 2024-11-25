@@ -46,8 +46,7 @@ RUN conda init bash \
     && echo "source activate lazyllm" > ~/.bashrc
 
 # 拆分多个requirements安装
-RUN --mount=type=cache,target=/root/.cache/pip,uid=0,gid=0 \
-    bash -c "source activate lazyllm && \
+RUN bash -c "source activate lazyllm && \
     conda install -y mpi4py && \
     pip install -r requirements0.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements1.txt --default-timeout=10000 --no-deps && \
