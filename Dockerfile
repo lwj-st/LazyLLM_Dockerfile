@@ -52,8 +52,8 @@ RUN bash -c "source activate lazyllm && \
     pip install -r requirements1.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements2.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements3.txt --default-timeout=10000 --no-deps && \
-    pip install flash-attn==2.6.2 && \
-    rm -rf /tmp/*"
+    pip install flash-attn==2.6.2 && pip cache purge\
+    && rm -rf /tmp/*"
 
 ENTRYPOINT ["/bin/bash"]
 WORKDIR /root
