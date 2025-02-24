@@ -14,7 +14,7 @@ RUN set -ex \
     && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && apt-get update && apt-get install -y openssh-server \
     git vim tzdata curl net-tools locales zip libtinfo5 cmake \
-    exuberant-ctags libclang-dev tcl expect telnet rsync \
+    exuberant-ctags libclang-dev tcl expect telnet rsync libibverbs1 \
     && rm -rf /var/lib/apt/lists/* \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && service ssh start \
