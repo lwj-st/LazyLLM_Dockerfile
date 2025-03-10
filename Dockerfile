@@ -26,7 +26,8 @@ RUN set -ex \
 # 下载并安装 Miniconda
 RUN set -ex \
     && wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.1.0-1-Linux-x86_64.sh \
-    && bash Miniconda3-py310_23.1.0-1-Linux-x86_64.sh -b -p /opt/miniconda3 \
+    && mkdir -p /mnt/lustre/share_data/env \
+    && bash Miniconda3-py310_23.1.0-1-Linux-x86_64.sh -b -p /mnt/lustre/share_data/env/miniconda3 \
     && rm Miniconda3-py310_23.1.0-1-Linux-x86_64.sh \
     && wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz \
     && tar xf redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz \
@@ -35,7 +36,7 @@ RUN set -ex \
     && rm -rf redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz
 
 # 将 conda 的 bin 目录添加到 PATH 环境变量
-ENV PATH="/opt/miniconda3/bin:/usr/local/redis-stack-server-7.2.0-v10/bin:${PATH}"
+ENV PATH="/mnt/lustre/share_data/env/miniconda3/bin:/usr/local/redis-stack-server-7.2.0-v10/bin:${PATH}"
 
 # 复制 requirements.txt 文件到 Docker 容器
 COPY requirement* /tmp/
@@ -52,7 +53,7 @@ RUN bash -c "source activate lazyllm && \
     pip install -r requirements1.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements2.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements3.txt --default-timeout=10000 --no-deps && \
-    pip install flash-attn==2.6.2 && pip cache purge\
+    pip install flash-attn==2.7.0.post2 && pip cache purge\
     && rm -rf /tmp/*"
 
 ENTRYPOINT ["/bin/bash"]
