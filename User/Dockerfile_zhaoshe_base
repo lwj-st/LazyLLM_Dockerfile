@@ -38,26 +38,23 @@ RUN set -ex \
 # 将 conda 的 bin 目录添加到 PATH 环境变量
 ENV PATH="/mnt/lustre/share_data/env/miniconda3/bin:/usr/local/redis-stack-server-7.2.0-v10/bin:${PATH}"
 
-# 复制 requirements.txt 文件到 Docker 容器
-COPY requirement* /tmp/
 
 # 初始化 conda
 RUN conda init bash \
     && conda create -n lazyllm --clone base \
     && echo "source activate lazyllm" > ~/.bashrc
 
-# 拆分多个requirements安装
-RUN bash -c "source activate lazyllm && \
-    conda install -y mpi4py && \
-    pip install -r requirements0.txt --default-timeout=10000 --no-deps && \
-    pip install -r requirements1.txt --default-timeout=10000 --no-deps && \
-    pip install -r requirements2.txt --default-timeout=10000 --no-deps && \
-    pip install -r requirements3.txt --default-timeout=10000 --no-deps && \
-    pip install flash-attn==2.7.0.post2 && pip install transformers==4.46.1 && \
-    pip cache purge && rm -rf /tmp/*"
+# 安装依赖
+RUN set -ex \
+    && apt-get update \
+    && apt-get install -y zsh iputils-ping \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -u 1083 -m -s /usr/bin/zsh -d "/home/mnt/zhaoshe"  "zhaoshe"
 
-# 修复vllm bug
-RUN perl -pi -e 's/parser.add_argument\("--port", type=int, default=8000, ge=1024, le=65535\)/parser.add_argument("--port", type=int, default=8000)/g' /mnt/lustre/share_data/env/miniconda3/envs/lazyllm/lib/python3.10/site-packages/vllm/entrypoints/api_server.py
+ENTRYPOINT ["/usr/bin/zsh"]
 
-ENTRYPOINT ["/bin/bash"]
-WORKDIR /root
+USER zhaoshe
+
+WORKDIR /home/mnt/zhaoshe
+
