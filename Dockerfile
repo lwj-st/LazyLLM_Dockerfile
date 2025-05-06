@@ -52,8 +52,16 @@ RUN bash -c "source activate lazyllm && \
     pip install -r requirements1.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements2.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements3.txt --default-timeout=10000 --no-deps && \
-    pip install flash-attn==2.6.2 && pip cache purge\
-    && rm -rf /tmp/*"
+    pip install flash-attn==2.7.0.post2 && pip install transformers==4.46.1 && \
+    pip cache purge && rm -rf /tmp/*"
+
+# 修复vllm bug
+RUN perl -pi -e 's/parser.add_argument\("--port", type=int, default=8000, ge=1024, le=65535\)/parser.add_argument("--port", type=int, default=8000)/g' /opt/miniconda3/envs/lazyllm/lib/python3.10/site-packages/vllm/entrypoints/api_server.py
+
+ARG LAZYLLM_VERSION=""
+ENV LAZYLLM_VERSION=$LAZYLLM_VERSION
+RUN bash -c "source activate lazyllm && pip install lazyllm==${LAZYLLM_VERSION}"  \
+    && rm -rf /tmp/*
 
 ENTRYPOINT ["/bin/bash"]
 WORKDIR /root
