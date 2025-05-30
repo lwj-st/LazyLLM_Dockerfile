@@ -25,4 +25,5 @@ done
 
 echo "分割完成：requirements0.txt - requirements3.txt"
 HASH=$(sha256sum requirements.txt | cut -c 1-8)
+echo "docker build -f Dockerfile-light --build-arg LAZYLLM_VERSION=xxx -t lazyllm/lazyllm:xxx-light ."
 echo "docker build --build-arg LAZYLLM_VERSION=xxx -t lazyllm/lazyllm:xxx ."
