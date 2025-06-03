@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ $# -gt 0 ]; then
+    echo "VERSION: $1"
+    VERSION=$1
+else
+    VERSION="xxx"
+    echo "No parameter provided, default VERSION=$VERSION"
+fi
 # 检查requirements.txt文件是否存在
 if [[ ! -f requirements.txt ]]; then
     echo "requirements.txt 文件不存在！"
@@ -25,11 +32,11 @@ done
 
 echo "分割完成：requirements0.txt - requirements3.txt"
 HASH=$(sha256sum requirements.txt | cut -c 1-8)
-echo "docker buildx build -f Dockerfile-light --build-arg LAZYLLM_VERSION=xxx --platform linux/arm64 -t lazyllm/lazyllm:0.5.1-light-arm64 --push . 
-docker buildx build -f Dockerfile-light --build-arg LAZYLLM_VERSION=xxx --platform linux/amd64 -t lazyllm/lazyllm:xxx-light-amd64 --push .
+echo "docker buildx build -f Dockerfile-light --build-arg LAZYLLM_VERSION=$VERSION --platform linux/arm64 -t lazyllm/lazyllm:$VERSION-light-arm64 --push . 
+docker buildx build -f Dockerfile-light --build-arg LAZYLLM_VERSION=$VERSION --platform linux/amd64 -t lazyllm/lazyllm:$VERSION-light-amd64 --push .
 docker buildx imagetools create \
-  -t lazyllm/lazyllm:xxx-light \
-  lazyllm/lazyllm:xxx-light-amd64 \
-  lazyllm/lazyllm:xxx-light-arm64"
+  -t lazyllm/lazyllm:$VERSION-light \
+  lazyllm/lazyllm:$VERSION-light-amd64 \
+  lazyllm/lazyllm:$VERSION-light-arm64"
 
-echo "docker build --build-arg LAZYLLM_VERSION=xxx -t lazyllm/lazyllm:xxx ."
+echo "docker build --build-arg LAZYLLM_VERSION=$VERSION -t lazyllm/lazyllm:$VERSION ."
