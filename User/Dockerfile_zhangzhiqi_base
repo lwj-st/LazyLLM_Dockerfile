@@ -1,0 +1,60 @@
+# 配置基础镜像
+FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+
+# 设置工作目录
+WORKDIR /tmp
+
+USER root
+# 安装依赖
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV TZ=Asia/Shanghai
+
+RUN set -ex \
+    && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && apt-get update && apt-get install -y openssh-server \
+    git vim tzdata curl net-tools locales zip libtinfo5 cmake ffmpeg \
+    exuberant-ctags libclang-dev tcl expect telnet rsync libibverbs1 libgl1 \
+    && rm -rf /var/lib/apt/lists/* \
+    && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
+    && service ssh start \
+    && echo 'LANG="en_US.UTF-8"' > /etc/default/locale \
+    && echo 'LC_ALL="en_US.UTF-8"' >> /etc/default/locale \
+    && locale-gen en_US.UTF-8
+
+
+# 下载并安装 Miniconda
+RUN set -ex \
+    && wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.1.0-1-Linux-x86_64.sh \
+    && mkdir -p /mnt/lustre/share_data/env \
+    && bash Miniconda3-py310_23.1.0-1-Linux-x86_64.sh -b -p /mnt/lustre/share_data/env/miniconda3 \
+    && rm Miniconda3-py310_23.1.0-1-Linux-x86_64.sh \
+    && wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz \
+    && tar xf redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz \
+    && chown -R root:root /tmp && chmod 1777 /tmp \
+    && mv redis-stack-server-7.2.0-v10 /usr/local/ \
+    && rm -rf redis-stack-server-7.2.0-v10.rhel7.x86_64.tar.gz
+
+# 将 conda 的 bin 目录添加到 PATH 环境变量
+ENV PATH="/mnt/lustre/share_data/env/miniconda3/bin:/usr/local/redis-stack-server-7.2.0-v10/bin:${PATH}"
+
+
+# 初始化 conda
+RUN conda init bash \
+    && conda create -n lazyllm --clone base \
+    && echo "source activate lazyllm" > ~/.bashrc
+
+# 安装依赖
+RUN set -ex \
+    && apt-get update \
+    && apt-get install -y zsh iputils-ping \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -u 2016 -m -s /usr/bin/zsh -d "/home/mnt/zhangzhiqi"  "zhangzhiqi"
+
+ENTRYPOINT ["/usr/bin/zsh"]
+
+USER zhangzhiqi
+
+WORKDIR /home/mnt/zhangzhiqi
+
