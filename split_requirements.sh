@@ -31,12 +31,3 @@ for i in {0..3}; do
 done
 
 echo "分割完成：requirements0.txt - requirements3.txt"
-HASH=$(sha256sum requirements.txt | cut -c 1-8)
-echo "docker buildx build -f Dockerfile-light --build-arg LAZYLLM_VERSION=$VERSION --platform linux/arm64 -t lazyllm/lazyllm:$VERSION-light-arm64 --push . 
-docker buildx build -f Dockerfile-light --build-arg LAZYLLM_VERSION=$VERSION --platform linux/amd64 -t lazyllm/lazyllm:$VERSION-light-amd64 --push .
-docker buildx imagetools create \
-  -t lazyllm/lazyllm:$VERSION-light \
-  lazyllm/lazyllm:$VERSION-light-amd64 \
-  lazyllm/lazyllm:$VERSION-light-arm64"
-
-echo "docker build --build-arg LAZYLLM_VERSION=$VERSION -t lazyllm/lazyllm:$VERSION ."
