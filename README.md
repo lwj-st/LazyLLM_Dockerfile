@@ -1,9 +1,6 @@
 ﻿### 版本镜像
 
 ```bash
-docker pull registry.cn-hangzhou.aliyuncs.com/lazyllm/cuda:12.1.0-cudnn8-devel-ubuntu22.04 \ 
-&& docker tag registry.cn-hangzhou.aliyuncs.com/lazyllm/cuda:12.1.0-cudnn8-devel-ubuntu22.04 nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
-
 export VERSION=
 docker build --build-arg LAZYLLM_VERSION=$VERSION -t lazyllm/lazyllm:$VERSION .
 docker tag lazyllm/lazyllm:$VERSION registry.cn-hangzhou.aliyuncs.com/lazyllm/lazyllm:$VERSION

@@ -1,5 +1,6 @@
 # 配置基础镜像
-FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+FROM lazyllm/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+# registry.cn-hangzhou.aliyuncs.com/lazyllm/cuda:12.1.0-cudnn8-devel-ubuntu22.04
 
 # 设置工作目录
 WORKDIR /tmp
@@ -50,13 +51,13 @@ RUN bash -c "source activate lazyllm && \
     conda install -y mpi4py && \
     pip install -r requirements0.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements1.txt --default-timeout=10000 --no-deps && \
+    pip cache purge "
+
+RUN bash -c "source activate lazyllm && \
     pip install -r requirements2.txt --default-timeout=10000 --no-deps && \
     pip install -r requirements3.txt --default-timeout=10000 --no-deps && \
-    pip install flash-attn==2.7.0.post2 && \
+    pip install flash-attn==2.8.0.post2 && \
     pip cache purge && rm -rf /tmp/*"
-
-# 修复vllm bug
-RUN perl -pi -e 's/parser.add_argument\("--port", type=int, default=8000, ge=1024, le=65535\)/parser.add_argument("--port", type=int, default=8000)/g' /opt/miniconda3/envs/lazyllm/lib/python3.10/site-packages/vllm/entrypoints/api_server.py
 
 ARG LAZYLLM_VERSION=""
 ENV LAZYLLM_VERSION=$LAZYLLM_VERSION
