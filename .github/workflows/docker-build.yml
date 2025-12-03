@@ -61,6 +61,12 @@ jobs:
             echo "Error: Failed to generate requirements_full.txt" && exit 1
           fi
           echo "Generated requirements.txt successfully"
+          
+      - name: mv requirements.txt
+        run: |
+          cp LazyLLM/requirements_full.txt .
+          rm -rf requirements.txt
+          mv requirements_full.txt requirements.txt
 
       - name: Set version from input
         id: version
@@ -73,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: requirements-${{ steps.version.outputs.version }}
-          path: requirements_full.txt
+          path: requirements.txt
           retention-days: 30
           if-no-files-found: error
 
