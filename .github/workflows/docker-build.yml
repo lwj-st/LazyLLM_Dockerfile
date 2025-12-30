@@ -54,6 +54,7 @@ jobs:
       - name: Generate requirements.txt
         run: |
           cd LazyLLM
+          poetry self add poetry-plugin-export
           poetry export -f requirements.txt --without-hashes -o requirements_full.txt --extras "full"
           cat requirements_full.txt
           sed -i '/^flash-attn==/d' requirements_full.txt
