@@ -54,8 +54,11 @@ jobs:
       - name: Generate requirements.txt
         run: |
           cd LazyLLM
+          pip install tomlkit
           poetry self add poetry-plugin-export
-          poetry export -f requirements.txt --without-hashes -o requirements_full.txt --extras "full"
+          python scripts/generate_toml_optional_deps.py
+          poetry lock
+          poetry export -f requirements.txt --without-hashes -o requirements_full.txt  --extras "optional"
           cat requirements_full.txt
           sed -i '/^flash-attn==/d' requirements_full.txt
           if [ ! -f requirements_full.txt ]; then
